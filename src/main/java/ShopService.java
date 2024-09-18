@@ -36,13 +36,14 @@ public class ShopService {
                  .toList();
     }
 
-    public void updateOrder(String orderId, OrderStatus newStatus) {
+    public Order updateOrder(String orderId, OrderStatus newStatus) {
         Order order = orderRepo.getOrderById(orderId);
         if (order == null) {
             throw new IllegalArgumentException("Order with ID: " + orderId + " not found");
         }
         Order updatedOrder = order.withStatus(newStatus);
         orderRepo.updateOrder(updatedOrder);
+        return updatedOrder;
     }
 
     public Order getOldestOrderPerStatus(OrderStatus status) {
