@@ -22,6 +22,12 @@ public class OrderListRepo implements OrderRepo{
         return newOrder;
     }
 
+    public void updateOrder(Order newOrder) {
+        Order existingOrder = getOrderById(newOrder.id());
+        orders.remove(existingOrder);
+        orders.add(newOrder);
+    }
+
     public void removeOrder(String id) {
         for (Order order : orders) {
             if (order.id().equals(id)) {

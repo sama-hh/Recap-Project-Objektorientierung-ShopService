@@ -26,4 +26,9 @@ public class OrderMapRepo implements OrderRepo{
     public void removeOrder(String id) {
         orders.remove(id);
     }
+
+    @Override
+    public void updateOrder(Order order) {
+        orders.put(order.id(), order);
+    }
 }
