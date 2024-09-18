@@ -15,8 +15,8 @@ public class Main {
 
         ShopService shopService = new ShopService(orderRepo, productRepo, idService);
 
-        List<String> productIds = List.of("1", "2");
-        List<String> productIds2 = List.of("1");
+        List<String> productIds = List.of("1");
+        List<String> productIds2 = List.of("2");
         List<String> productIds3 = List.of("3");
 
 
@@ -38,8 +38,11 @@ public class Main {
             System.err.println(e.getMessage());
         }
 
+        System.out.println("Update");
         System.out.println("PROCESSING = " + shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING));
         System.out.println("COMPLETED= " + shopService.getAllOrdersWithStatus(OrderStatus.COMPLETED));
+
+        System.out.println("oldest order = " + shopService.getOldestOrderPerStatus(OrderStatus.PROCESSING));
 
     }
 }

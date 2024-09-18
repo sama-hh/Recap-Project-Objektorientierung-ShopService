@@ -1,10 +1,7 @@
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ShopService {
@@ -46,6 +43,12 @@ public class ShopService {
         }
         Order updatedOrder = order.withStatus(newStatus);
         orderRepo.updateOrder(updatedOrder);
+    }
+
+    public Order getOldestOrderPerStatus(OrderStatus status) {
+        return getAllOrdersWithStatus(status).stream()
+                .min((o1,o2) -> o1.timestamp().compareTo(o2.timestamp()))
+                .orElseThrow(() -> new NoSuchElementException("No order found"));
     }
 
 }
