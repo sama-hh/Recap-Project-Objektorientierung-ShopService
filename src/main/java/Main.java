@@ -2,10 +2,14 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        Product product1 = new Product("1", "Headphones");
+        Product product2 = new Product("2", "Mouse");
         ProductRepo productRepo = new ProductRepo();
         OrderMapRepo orderRepo = new OrderMapRepo();
+        productRepo.addProduct(product1);
+        productRepo.addProduct(product2);
 
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(orderRepo, productRepo);
 
         List<String> productIds = List.of("1", "2");
         List<String> productIds2 = List.of("1");

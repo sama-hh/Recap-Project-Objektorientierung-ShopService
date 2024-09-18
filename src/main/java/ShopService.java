@@ -1,13 +1,21 @@
+import lombok.RequiredArgsConstructor;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
     private int orderId = 1;
+
+    public ShopService(OrderRepo orderRepo, ProductRepo productRepo) {
+        this.orderRepo = orderRepo;
+        this.productRepo = productRepo;
+    }
 
     public Order addOrder(List<String> productIds) {
         List<Product> products = new ArrayList<>();
@@ -21,7 +29,6 @@ public class ShopService {
         Order newOrder = new Order(String.valueOf(orderId), products, OrderStatus.PROCESSING, Instant.now());
         orderId++;
         orderRepo.addOrder(newOrder);
-//        System.out.println("orderRepo.getOrders() = " + orderRepo.getOrders());
         return newOrder;
     }
 
