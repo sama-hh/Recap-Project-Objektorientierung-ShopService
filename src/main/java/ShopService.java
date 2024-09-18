@@ -5,55 +5,49 @@ import java.util.*;
 
 @RequiredArgsConstructor
 public class ShopService {
-    private ProductRepo productRepo = new ProductRepo();
-    private OrderRepo orderRepo = new OrderMapRepo();
-    private IdService IdService = new IdService();
-
-    public ShopService(OrderRepo orderRepo, ProductRepo productRepo, IdService IdService) {
-        this.orderRepo = orderRepo;
-        this.productRepo = productRepo;
-        this.IdService = IdService;
-    }
+    private final ProductRepo productRepo;
+    private final OrderRepo orderRepo;
+    private final IdService IdService;
 
     public Order addOrder(List<String> productIds) {
         List<Product> products = new ArrayList<>();
         for (String productId : productIds) {
-            Optional<Product> productToOrder = productRepo.getProductById(productId);
-            if (productToOrder.isEmpty() ) {
-                throw new IllegalArgumentException("Product with id " + productId + " not found");
-            } else {
-                products.add(productToOrder.get());
-                int newQuantity = productToOrder.get().quantity() - 1;
-                Product updatedProduct = productToOrder.get().withQuantity(newQuantity);
-                productRepo.updateProduct(updatedProduct);
-            }
+            Product productToOrder = productRepo.getProductById(productId)
+                                                .orElseThrow(() -> new NoSuchElementException("Product with id " + productId + " not found"));
+            products.add(productToOrder);
+            int newQuantity = productToOrder.quantity() - 1;
+            Product updatedProduct = productToOrder.withQuantity(newQuantity);
+            productRepo.updateProduct(updatedProduct);
         }
+
         Order newOrder = new Order(IdService.generateId(), products, OrderStatus.PROCESSING, Instant.now());
         orderRepo.addOrder(newOrder);
         return newOrder;
     }
 
     public List<Order> getAllOrdersWithStatus(OrderStatus status) {
-         return orderRepo.getOrders()
-                 .stream()
-                 .filter(order -> order.status().equals(status))
-                 .toList();
+        return orderRepo.getOrders()
+                .stream()
+                .filter(order -> order.status().equals(status))
+                .toList();
     }
 
     public Order updateOrder(String orderId, OrderStatus newStatus) {
         Order order = orderRepo.getOrderById(orderId);
         if (order == null) {
-            throw new IllegalArgumentException("Order with ID: " + orderId + " not found");
+            throw new NoSuchElementException("Order with ID: " + orderId + " not found");
         }
         Order updatedOrder = order.withStatus(newStatus);
         orderRepo.updateOrder(updatedOrder);
         return updatedOrder;
     }
 
-    public Order getOldestOrderPerStatus(OrderStatus status) {
-        return getAllOrdersWithStatus(status).stream()
-                .min((o1,o2) -> o1.timestamp().compareTo(o2.timestamp()))
+    public HashMap<OrderStatus, Order> getOldestOrderPerStatus(OrderStatus status) {
+        HashMap<OrderStatus, Order> orders = new HashMap<>();
+        Order order =  getAllOrdersWithStatus(status).stream()
+                .min((order1, order2) -> order1.timestamp().compareTo(order2.timestamp()))
                 .orElseThrow(() -> new NoSuchElementException("No order found"));
+        orders.put(order.status(), order);
+        return orders;
     }
-
 }
