@@ -10,11 +10,12 @@ import java.util.UUID;
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
-    private int orderId = 1;
+    private IdService IdService = new IdService();
 
-    public ShopService(OrderRepo orderRepo, ProductRepo productRepo) {
+    public ShopService(OrderRepo orderRepo, ProductRepo productRepo, IdService IdService) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
+        this.IdService = IdService;
     }
 
     public Order addOrder(List<String> productIds) {
@@ -26,8 +27,7 @@ public class ShopService {
             }
             products.add(productToOrder.get());
         }
-        Order newOrder = new Order(String.valueOf(orderId), products, OrderStatus.PROCESSING, Instant.now());
-        orderId++;
+        Order newOrder = new Order(IdService.generateId(), products, OrderStatus.PROCESSING, Instant.now());
         orderRepo.addOrder(newOrder);
         return newOrder;
     }

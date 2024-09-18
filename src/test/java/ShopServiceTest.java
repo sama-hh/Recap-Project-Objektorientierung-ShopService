@@ -12,9 +12,10 @@ class ShopServiceTest {
         //GIVEN
         ProductRepo productRepo = new ProductRepo();
         OrderMapRepo orderRepo = new OrderMapRepo();
+        IdService idService = new IdService();
         Product product= new Product("1", "Apfel");
         productRepo.addProduct(product);
-        ShopService shopService = new ShopService(orderRepo, productRepo);
+        ShopService shopService = new ShopService(orderRepo, productRepo, idService);
         List<String> productsIds = List.of("1");
 
         //WHEN
