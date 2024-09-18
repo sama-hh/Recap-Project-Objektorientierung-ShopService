@@ -11,10 +11,10 @@ public class Main {
         OrderMapRepo orderRepo = new OrderMapRepo();
         IdService idService = new IdService();
 
-        Product product1 = new Product("1", "Apfel");
-        Product product2 = new Product("2", "Banana");
-        Product product3 = new Product("3", "Blueberry");
-        Product product4 = new Product("4", "Plum");
+        Product product1 = new Product("1", "Apfel", 20);
+        Product product2 = new Product("2", "Banana",30);
+        Product product3 = new Product("3", "Blueberry",40);
+        Product product4 = new Product("4", "Plum",50);
         productRepo.addProduct(product1);
         productRepo.addProduct(product2);
         productRepo.addProduct(product3);
@@ -26,16 +26,15 @@ public class Main {
         List<String> productIds2 = List.of("2");
         List<String> productIds3 = List.of("3");
 
-
         try {
             shopService.addOrder(productIds);
-//            shopService.addOrder(productIds2);
-//            shopService.addOrder(productIds3);
+            shopService.addOrder(productIds2);
+            shopService.addOrder(productIds3);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
 
-//        System.out.println("PROCESSING = " + shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING));
+        System.out.println("PROCESSING = " + shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING));
 
         Order order = shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING).get(0);
 
@@ -45,13 +44,16 @@ public class Main {
             System.err.println(e.getMessage());
         }
 
-//        System.out.println("Update");
-//        System.out.println("PROCESSING = " + shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING));
-//        System.out.println("COMPLETED= " + shopService.getAllOrdersWithStatus(OrderStatus.COMPLETED));
-//
-//        System.out.println("oldest order = " + shopService.getOldestOrderPerStatus(OrderStatus.PROCESSING));
+        System.out.println("Update");
+        System.out.println("PROCESSING = " + shopService.getAllOrdersWithStatus(OrderStatus.PROCESSING));
+        System.out.println("COMPLETED= " + shopService.getAllOrdersWithStatus(OrderStatus.COMPLETED));
+
+        System.out.println("oldest order = " + shopService.getOldestOrderPerStatus(OrderStatus.PROCESSING));
+
+        System.out.println(productRepo.getProducts());
 
         // Transaction File
+        System.out.println();
         HashMap<String, Order> ordersMap = new HashMap<>();
         try {
             Path filePath = Path.of("transactions.txt");
@@ -85,7 +87,7 @@ public class Main {
                 ordersMap.replace(orderName, updatedOrder);
             }
             case "printOrders" -> {
-                System.out.println(ordersMap);
+                System.out.println("Transaction File " + ordersMap);
             }
         }
     };

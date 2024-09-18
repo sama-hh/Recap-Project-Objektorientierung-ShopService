@@ -12,7 +12,7 @@ class OrderListRepoTest {
     void getOrders() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
-        Product product = new Product("1", "Apfel");
+        Product product = new Product("1", "Apfel", 20);
         Instant timestamp = Instant.now();
         Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, timestamp);
         repo.addOrder(newOrder);
@@ -22,7 +22,7 @@ class OrderListRepoTest {
 
         //THEN
         List<Order> expected = new ArrayList<>();
-        Product product1 = new Product("1", "Apfel");
+        Product product1 = new Product("1", "Apfel", 20);
         expected.add(new Order("1", List.of(product1), OrderStatus.PROCESSING, timestamp));
 
         assertEquals(expected, actual);
@@ -33,7 +33,7 @@ class OrderListRepoTest {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
 
-        Product product = new Product("1", "Apfel");
+        Product product = new Product("1", "Apfel", 20);
         Instant timestamp = Instant.now();
         Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, timestamp);
         repo.addOrder(newOrder);
@@ -42,7 +42,7 @@ class OrderListRepoTest {
         Order actual = repo.getOrderById("1");
 
         //THEN
-        Product product1 = new Product("1", "Apfel");
+        Product product1 = new Product("1", "Apfel", 20);
         Order expected = new Order("1", List.of(product1), OrderStatus.PROCESSING, timestamp);
         assertEquals(expected, actual);
     }
@@ -51,7 +51,7 @@ class OrderListRepoTest {
     void addOrder() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
-        Product product = new Product("1", "Apfel");
+        Product product = new Product("1", "Apfel", 20);
         Instant timestamp = Instant.now();
         Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, timestamp);
         repo.addOrder(newOrder);
@@ -60,7 +60,7 @@ class OrderListRepoTest {
         Order actual = repo.addOrder(newOrder);
 
         //THEN
-        Product product1 = new Product("1", "Apfel");
+        Product product1 = new Product("1", "Apfel", 20);
         Order expected = new Order("1", List.of(product1), OrderStatus.PROCESSING, timestamp);
         assertEquals(expected, actual);
         assertEquals(expected, repo.getOrderById("1"));

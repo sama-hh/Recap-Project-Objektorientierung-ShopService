@@ -35,4 +35,14 @@ public class ProductRepo {
            }
         }
     }
+
+    public void updateProduct(Product updatedProduct) {
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.id().equals(updatedProduct.id())) {
+                products.set(i, updatedProduct);
+                return;
+            }
+        }
+    }
 }

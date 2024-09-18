@@ -21,8 +21,12 @@ public class ShopService {
             Optional<Product> productToOrder = productRepo.getProductById(productId);
             if (productToOrder.isEmpty() ) {
                 throw new IllegalArgumentException("Product with id " + productId + " not found");
+            } else {
+                products.add(productToOrder.get());
+                int newQuantity = productToOrder.get().quantity() - 1;
+                Product updatedProduct = productToOrder.get().withQuantity(newQuantity);
+                productRepo.updateProduct(updatedProduct);
             }
-            products.add(productToOrder.get());
         }
         Order newOrder = new Order(IdService.generateId(), products, OrderStatus.PROCESSING, Instant.now());
         orderRepo.addOrder(newOrder);
