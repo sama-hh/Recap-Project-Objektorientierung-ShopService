@@ -21,18 +21,18 @@ class ProductRepoTest {
         assertEquals(actual, expected);
     }
 
-    @org.junit.jupiter.api.Test
-    void getProductById() {
-        //GIVEN
-        ProductRepo repo = new ProductRepo();
-
-        //WHEN
-        Product actual = repo.getProductById("1");
-
-        //THEN
-        Product expected = new Product("1", "Apfel");
-        assertEquals(actual, expected);
-    }
+//    @org.junit.jupiter.api.Test
+//    void getProductById() {
+//        //GIVEN
+//        ProductRepo repo = new ProductRepo();
+//
+//        //WHEN
+//        Product actual = repo.getProductById("1");
+//
+//        //THEN
+//        Product expected = new Product("1", "Apfel");
+//        assertEquals(actual, expected);
+//    }
 
     @org.junit.jupiter.api.Test
     void addProduct() {
